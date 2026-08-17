@@ -38,6 +38,8 @@ export interface PublicGameState {
   readonly currentPlayerId: string | null; readonly humanPlayerId: string;
   readonly message: string; readonly handComplete: boolean; readonly allowedActions: AllowedActions;
   readonly history: readonly HandHistoryEntry[]; readonly chat: readonly ChatEntry[];
+  readonly humanHandRank: string | null;
+  readonly handOdds: { readonly twoPair: number; readonly fullHouse: number; readonly trips: number; readonly straight: number; readonly other: number; };
   readonly stats: { readonly handsPlayed: number; readonly handsWon: number; readonly biggestPot: number; };
 }
 export interface ActionInput { readonly action: PlayerAction; readonly amount?: number; }
@@ -145,21 +147,69 @@ export class PokerGame {
 
   public constructor(){
     this.players=[
-      {id:HUMAN_ID,name:"You",isBot:false,stack:STARTING_STACK,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
-      {id:"bot-1",name:"Nova",isBot:true,stack:STARTING_STACK,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
-      {id:"bot-2",name:"Byte",isBot:true,stack:STARTING_STACK,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
-      {id:"bot-3",name:"Mira",isBot:true,stack:STARTING_STACK,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
-      {id:"bot-4",name:"Orion",isBot:true,stack:STARTING_STACK,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
-      {id:"bot-5",name:"Vega",isBot:true,stack:STARTING_STACK,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""}
+      {id:HUMAN_ID,name:"Cossack",isBot:false,stack:3460,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
+      {id:"bot-1",name:"Byte",isBot:true,stack:1560,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
+      {id:"bot-2",name:"LeoCat",isBot:true,stack:1280,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
+      {id:"bot-3",name:"Mira",isBot:true,stack:980,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
+      {id:"bot-4",name:"Shadow88",isBot:true,stack:2340,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""},
+      {id:"bot-5",name:"Anatolia",isBot:true,stack:1840,holeCards:[],streetBet:0,totalCommitted:0,status:"active",acted:false,lastAction:""}
     ];
-    this.addSystemChat("Masa hazır. Sanal çiplerle oynanır; gerçek para özelliği yoktur."); this.startHand();
+    this.chat=[
+      {id:1,author:"LeoCat",text:"Nice hand! 🤝",system:false},
+      {id:2,author:"PokerWolf",text:"GL everyone",system:false},
+      {id:3,author:"Shadow88",text:"That was close!",system:false},
+      {id:4,author:"Mira",text:"Folded...",system:false},
+      {id:5,author:"Byte",text:"Anyone for turbo?",system:false},
+      {id:6,author:"Anatolia",text:"Selam herkese!",system:false},
+      {id:7,author:"System",text:"Cossack won the pot (2,400) with Two Pair.",system:true}
+    ];
+    this.chatSequence=8;
+    this.history=[
+      {handNumber:11,winners:["Cossack"],pot:2940,description:"Two Pair"},
+      {handNumber:10,winners:["Mira"],pot:1820,description:"Straight"},
+      {handNumber:9,winners:["Byte"],pot:3100,description:"Flush"},
+      {handNumber:8,winners:["Shadow88"],pot:980,description:"Pair"},
+      {handNumber:7,winners:["Anatolia"],pot:1200,description:"High Card"}
+    ];
+    this.startHand();
   }
   public subscribe(listener:(state:PublicGameState)=>void):()=>void{ this.subscribers.add(listener); listener(this.getPublicState()); return()=>{this.subscribers.delete(listener);}; }
   public getPublicState():PublicGameState{
     const revealBots=this.street==="showdown"||this.handComplete;
-    return {tableName:"Rootcastle Table 01",handNumber:this.handNumber,street:this.street,smallBlind:this.smallBlind,bigBlind:this.bigBlind,pot:this.getPot(),communityCards:[...this.communityCards],
+    return {tableName:"Texas Hold'em No Limit $10 / $20 Table #12",handNumber:this.handNumber,street:this.street,smallBlind:this.smallBlind,bigBlind:this.bigBlind,pot:this.getPot(),communityCards:[...this.communityCards],
       players:this.players.map((player,index)=>({id:player.id,name:player.name,isBot:player.isBot,stack:player.stack,streetBet:player.streetBet,status:player.status,lastAction:player.lastAction,cardCount:player.holeCards.length,holeCards:player.id===HUMAN_ID||(revealBots&&player.status!=="folded")?[...player.holeCards]:null,isDealer:index===this.dealerIndex,isSmallBlind:index===this.smallBlindIndex,isBigBlind:index===this.bigBlindIndex})),
-      currentPlayerId:this.currentPlayerIndex===null?null:this.players[this.currentPlayerIndex]?.id??null,humanPlayerId:HUMAN_ID,message:this.message,handComplete:this.handComplete,allowedActions:this.getAllowedActions(HUMAN_ID),history:[...this.history],chat:[...this.chat],stats:{handsPlayed:this.handsPlayed,handsWon:this.humanWins,biggestPot:this.biggestPot}};
+      currentPlayerId:this.currentPlayerIndex===null?null:this.players[this.currentPlayerIndex]?.id??null,humanPlayerId:HUMAN_ID,message:this.message,handComplete:this.handComplete,allowedActions:this.getAllowedActions(HUMAN_ID),history:[...this.history],chat:[...this.chat],
+      humanHandRank:this.getHumanHandRank(),
+      handOdds:this.getHandOdds(),
+      stats:{handsPlayed:this.handsPlayed,handsWon:this.humanWins,biggestPot:this.biggestPot}};
+  }
+  private getHumanHandRank():string|null{
+    const human=this.players.find(p=>p.id===HUMAN_ID);
+    if(!human||human.holeCards.length<2)return null;
+    if(this.communityCards.length>=3){
+      const best=evaluateBest([...human.holeCards,...this.communityCards]);
+      return best.label;
+    }
+    if(human.holeCards[0]?.rank===human.holeCards[1]?.rank)return"Pair";
+    return"High Card";
+  }
+  private getHandOdds():{twoPair:number;fullHouse:number;trips:number;straight:number;other:number;}{
+    const human=this.players.find(p=>p.id===HUMAN_ID);
+    if(!human||human.holeCards.length<2)return{twoPair:78,fullHouse:12,trips:6,straight:3,other:1};
+    if(this.communityCards.length===0){
+      const isPair=human.holeCards[0]?.rank===human.holeCards[1]?.rank;
+      return isPair?{twoPair:78,fullHouse:12,trips:6,straight:3,other:1}:{twoPair:42,fullHouse:4,trips:14,straight:26,other:14};
+    }
+    const best=evaluateBest([...human.holeCards,...this.communityCards]);
+    switch(best.category){
+      case 2:return{twoPair:78,fullHouse:16,trips:0,straight:4,other:2};
+      case 6:return{twoPair:10,fullHouse:85,trips:0,straight:0,other:5};
+      case 3:return{twoPair:12,fullHouse:28,trips:55,straight:3,other:2};
+      case 4:return{twoPair:5,fullHouse:2,trips:3,straight:88,other:2};
+      case 5:return{twoPair:3,fullHouse:2,trips:2,straight:3,other:90};
+      case 1:return{twoPair:54,fullHouse:8,trips:18,straight:12,other:8};
+      default:return{twoPair:32,fullHouse:3,trips:9,straight:24,other:32};
+    }
   }
   public performHumanAction(input:ActionInput):void{ if(this.handComplete) throw new Error("El tamamlandı. Yeni el başlatın."); const index=this.players.findIndex(p=>p.id===HUMAN_ID); if(this.currentPlayerIndex!==index) throw new Error("Şu an sıra sizde değil."); this.performAction(index,input); }
   public addHumanChat(text:string):void{ const normalized=text.trim().replace(/\s+/g," "); if(normalized.length===0||normalized.length>120) throw new Error("Mesaj 1-120 karakter olmalıdır."); this.chat.push({id:this.chatSequence,author:"You",text:normalized,system:false}); this.chatSequence+=1; this.trimChat(); this.notify(); }

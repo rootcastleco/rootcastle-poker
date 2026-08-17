@@ -1,47 +1,541 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
   <title>Rootcastle Poker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<div class="app-shell">
+<div class="app-layout">
+
+  <!-- TOP HEADER -->
   <header class="topbar">
-    <div class="brand"><div class="brand-mark">♠</div><div><strong>ROOTCASTLE</strong><span>POKER LAB</span></div></div>
-    <div class="table-summary"><span id="table-name">Rootcastle Table 01</span><span class="sep">/</span><span id="hand-number">HAND #---</span><span class="sep">/</span><span>BLINDS <strong id="blind-level">$10 / $20</strong></span></div>
-    <div class="top-actions"><span id="connection-status" class="connection connection--bad">RECONNECTING</span><div class="wallet"><span>STACK</span><strong id="wallet-value">$0</strong></div><button id="reset-button" class="icon-button" type="button" aria-label="Masayı sıfırla">↻</button></div>
+    <div class="topbar-left">
+      <div class="brand">
+        <div class="brand-spade">♠</div>
+        <div class="brand-text">
+          <span class="brand-title">ROOTCASTLE</span>
+          <span class="brand-sub">POKER</span>
+        </div>
+      </div>
+
+      <nav class="top-nav">
+        <button type="button" class="nav-btn nav-btn--active">Play</button>
+        <button type="button" class="nav-btn">Lobby</button>
+        <button type="button" class="nav-btn">Tournaments</button>
+        <button type="button" class="nav-btn">Leaderboard</button>
+        <button type="button" class="nav-btn">Profile</button>
+        <button type="button" class="nav-btn">Store</button>
+      </nav>
+    </div>
+
+    <div class="topbar-right">
+      <div class="status-pill online-pill">
+        <span class="live-pulse-dot"></span>
+        <span>Online: <strong>342</strong></span>
+      </div>
+
+      <button type="button" class="icon-circle-btn bell-btn" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <span class="notif-dot"></span>
+      </button>
+
+      <div class="chip-balance-pill">
+        <span class="gold-coin-icon">🟡</span>
+        <strong id="header-chips">12,450</strong>
+        <button type="button" class="chip-add-btn" aria-label="Add Chips">+</button>
+      </div>
+
+      <div class="profile-chip">
+        <img src="/assets/avatars/cossack.jpg" alt="Cossack" class="profile-avatar-img">
+        <div class="profile-meta">
+          <span class="profile-name">Cossack</span>
+          <span class="profile-level">Lv. 12</span>
+        </div>
+        <button type="button" id="reset-button" class="gear-btn" title="Reset Table / Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <aside class="sidebar sidebar--left">
-    <nav class="nav-list"><button class="nav-item nav-item--active" type="button"><span>♠</span>Play</button><button class="nav-item" type="button"><span>⌁</span>Tables</button><button class="nav-item" type="button"><span>◎</span>Profile</button><button class="nav-item" type="button"><span>≡</span>History</button></nav>
-    <section class="panel compact-panel"><div class="panel-title"><span>SESSION</span><span class="live-dot"></span></div><dl class="stat-grid"><div><dt>Hands</dt><dd id="stat-hands">0</dd></div><div><dt>Won</dt><dd id="stat-wins">0</dd></div><div><dt>Win rate</dt><dd id="stat-rate">0%</dd></div><div><dt>Biggest pot</dt><dd id="stat-biggest">$0</dd></div></dl></section>
-    <section class="panel chat-panel"><div class="panel-title">TABLE CHAT</div><div id="chat-list" class="chat-list" aria-live="polite"></div><form id="chat-form" class="chat-form"><input id="chat-input" maxlength="120" autocomplete="off" placeholder="Mesaj yaz..." aria-label="Sohbet mesajı"><button type="submit" aria-label="Gönder">→</button></form></section>
-    <p class="fair-play">Virtual chips only · No real-money wagering</p>
-  </aside>
+  <!-- MAIN BODY: 3 COLUMNS -->
+  <div class="workspace">
 
-  <main class="game-stage">
-    <section class="table-header"><div><span class="eyebrow">STREET</span><strong id="street-value">PREFLOP</strong></div><div class="pot-box"><span>POT</span><strong id="pot-value">$0</strong></div><button id="new-hand-button" class="secondary-button" type="button" disabled>NEW HAND</button></section>
-    <div class="poker-room"><div class="ambient-grid"></div><div class="poker-table"><div class="table-rail"></div><div class="table-felt"><div class="felt-line felt-line--outer"></div><div class="felt-line felt-line--inner"></div><div class="table-logo"><span>♠</span><strong>ROOTCASTLE</strong><small>TEXAS HOLD'EM</small></div><div id="community-cards" class="community-cards"></div><div class="pot-chips"><i></i><i></i><i></i><i></i><i></i></div></div>
-      <div id="seat-0" class="seat seat-0"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>YOU</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
-      <div id="seat-1" class="seat seat-1"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
-      <div id="seat-2" class="seat seat-2"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
-      <div id="seat-3" class="seat seat-3"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
-      <div id="seat-4" class="seat seat-4"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
-      <div id="seat-5" class="seat seat-5"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
-    </div></div>
-    <div id="status-message" class="status-message" aria-live="polite">Oyun yükleniyor...</div>
-    <section class="action-console"><div class="action-buttons"><button id="fold-button" class="action-button action-button--fold" type="button" disabled>FOLD</button><button id="passive-button" class="action-button action-button--call" type="button" disabled>CHECK</button><button id="raise-button" class="action-button action-button--raise" type="button" disabled>RAISE</button></div><div class="bet-control"><div class="bet-control-head"><span>RAISE TO</span><input id="raise-amount" type="number" value="0" min="0" step="10" disabled></div><input id="raise-range" type="range" value="0" min="0" max="100" step="10" disabled aria-label="Raise miktarı"><div class="bet-marks"><span>MIN</span><span>POT CONTROL</span><span>MAX</span></div></div></section>
-  </main>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar sidebar-left">
+      <div class="panel-tabs">
+        <button type="button" class="tab-btn tab-btn--active">Chat</button>
+        <button type="button" class="tab-btn">Table</button>
+      </div>
 
-  <aside class="sidebar sidebar--right">
-    <section class="panel lobby-panel"><div class="panel-title"><span>LIVE TABLES</span><span>6 MAX</span></div><div class="table-row table-row--active"><span><i class="live-dot"></i>RC-01</span><span>$10 / $20</span><strong>PLAYING</strong></div><div class="table-row"><span><i></i>RC-02</span><span>$25 / $50</span><em>LOCKED</em></div><div class="table-row"><span><i></i>RC-03</span><span>$50 / $100</span><em>LOCKED</em></div></section>
-    <section class="panel history-panel"><div class="panel-title"><span>RECENT HANDS</span><span>SERVER VERIFIED</span></div><div id="history-list" class="history-list"></div></section>
-    <section class="panel system-panel"><div class="panel-title">ENGINE</div><div class="engine-row"><span>Authority</span><strong>Server</strong></div><div class="engine-row"><span>Transport</span><strong>SSE + REST</strong></div><div class="engine-row"><span>Deck RNG</span><strong>crypto.randomInt</strong></div><div class="engine-row"><span>Mode</span><strong>1P + 5 bots</strong></div></section>
-  </aside>
+      <!-- CHAT STREAM -->
+      <div class="chat-container">
+        <div id="chat-list" class="chat-stream">
+          <!-- Chat items rendered dynamically or seeded -->
+        </div>
+
+        <form id="chat-form" class="chat-input-bar">
+          <input id="chat-input" type="text" maxlength="120" placeholder="Type a message..." autocomplete="off">
+          <button type="button" class="emoji-btn" title="Emoji">😊</button>
+          <button type="submit" class="send-btn" title="Send">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- HAND STRENGTH WIDGET -->
+      <div class="hand-strength-card">
+        <div class="card-head">
+          <span>Hand Strength</span>
+        </div>
+        <div class="strength-bars">
+          <div class="strength-row">
+            <span class="strength-label">Two Pair</span>
+            <div class="bar-track"><div id="bar-two-pair" class="bar-fill bar-fill--gold" style="width: 78%;"></div></div>
+            <span id="val-two-pair" class="strength-pct">78%</span>
+          </div>
+          <div class="strength-row">
+            <span class="strength-label">Full House</span>
+            <div class="bar-track"><div id="bar-full-house" class="bar-fill bar-fill--cyan" style="width: 12%;"></div></div>
+            <span id="val-full-house" class="strength-pct">12%</span>
+          </div>
+          <div class="strength-row">
+            <span class="strength-label">Three of a Kind</span>
+            <div class="bar-track"><div id="bar-trips" class="bar-fill bar-fill--blue" style="width: 6%;"></div></div>
+            <span id="val-trips" class="strength-pct">6%</span>
+          </div>
+          <div class="strength-row">
+            <span class="strength-label">Straight</span>
+            <div class="bar-track"><div id="bar-straight" class="bar-fill bar-fill--blue" style="width: 3%;"></div></div>
+            <span id="val-straight" class="strength-pct">3%</span>
+          </div>
+          <div class="strength-row">
+            <span class="strength-label">Other</span>
+            <div class="bar-track"><div id="bar-other" class="bar-fill bar-fill--blue" style="width: 1%;"></div></div>
+            <span id="val-other" class="strength-pct">1%</span>
+          </div>
+        </div>
+        <label class="auto-muck-toggle">
+          <input type="checkbox" id="auto-muck" checked>
+          <span class="checkmark">✓</span>
+          <span>Auto Muck</span>
+        </label>
+      </div>
+    </aside>
+
+    <!-- CENTER POKER ARENA -->
+    <main class="arena">
+      <!-- TABLE OVERLAY HEADER -->
+      <div class="table-top-overlay">
+        <div class="table-badge">
+          <div class="table-badge-row1">
+            <strong>Texas Hold'em</strong>
+            <span class="badge-stakes" id="table-stakes">$10 / $20</span>
+          </div>
+          <div class="table-badge-row2">
+            <span>No Limit</span>
+            <span class="badge-num" id="table-number">Table #12</span>
+          </div>
+        </div>
+
+        <div class="table-top-actions">
+          <button type="button" id="new-hand-button" class="btn-leave-table" style="background:#1d4ed8;margin-right:8px;display:none;">Deal Next</button>
+          <button type="button" class="btn-leave-table">Leave Table</button>
+          <button type="button" class="btn-table-gear" aria-label="Table Options">⚙</button>
+        </div>
+      </div>
+
+      <!-- 3D POKER TABLE STAGE -->
+      <div class="poker-stage">
+        <div class="table-felt-outer">
+          <div class="table-felt-inner">
+            <div class="felt-line-outer"></div>
+            <div class="felt-line-inner"></div>
+
+            <!-- POT & CHIP STACK -->
+            <div class="center-pot-area">
+              <div class="chip-stack-3d">
+                <span class="chip chip-cyan"></span>
+                <span class="chip chip-red"></span>
+                <span class="chip chip-yellow"></span>
+                <span class="chip chip-blue"></span>
+                <span class="chip chip-dark"></span>
+              </div>
+              <div class="pot-pill-badge">
+                <span>Pot: <strong id="pot-amount">2,940</strong></span>
+              </div>
+            </div>
+
+            <!-- COMMUNITY CARDS -->
+            <div id="community-cards" class="board-cards">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- DEALER BUTTON TOKEN -->
+            <div id="dealer-button-token" class="dealer-token" style="display:none;">D</div>
+          </div>
+        </div>
+
+        <!-- 6 PLAYER SEATS -->
+        <!-- SEAT 0: HUMAN (COSSACK) - BOTTOM CENTER -->
+        <div id="seat-0" class="player-seat seat-human seat-pos-bottom">
+          <div class="human-cards-wrap">
+            <div class="floating-hand-rank" id="human-hand-rank-pill">
+              <span id="hand-rank-text">Two Pair</span> <i class="info-circle">ℹ</i>
+            </div>
+            <div class="hole-cards" data-hole></div>
+          </div>
+          <div class="avatar-ring avatar-ring--active">
+            <img src="/assets/avatars/cossack.jpg" alt="Cossack" class="avatar-img" data-avatar-img>
+            <span class="country-flag">🇹🇷</span>
+          </div>
+          <div class="seat-card">
+            <div class="seat-header">
+              <strong class="player-name" data-name>Cossack</strong>
+            </div>
+            <div class="player-stack" data-stack>$3,460</div>
+            <div class="timer-bar"><div class="timer-progress" data-timer></div></div>
+            <div class="action-pill" data-action></div>
+          </div>
+        </div>
+
+        <!-- SEAT 1: BYTE (BOTTOM-LEFT / MID-LEFT) -->
+        <div id="seat-1" class="player-seat seat-pos-midleft">
+          <div class="hole-cards" data-hole></div>
+          <div class="avatar-ring">
+            <img src="/assets/avatars/byte.jpg" alt="Byte" class="avatar-img" data-avatar-img>
+            <span class="country-flag">🇩🇪</span>
+            <span class="crown-icon">👑</span>
+          </div>
+          <div class="seat-card">
+            <div class="seat-header">
+              <strong class="player-name" data-name>Byte</strong>
+            </div>
+            <div class="player-stack" data-stack>$1,560</div>
+            <div class="action-pill" data-action>Call 1,200</div>
+          </div>
+        </div>
+
+        <!-- SEAT 2: LEOCAT (TOP-LEFT) -->
+        <div id="seat-2" class="player-seat seat-pos-topleft">
+          <div class="hole-cards" data-hole></div>
+          <div class="avatar-ring avatar-ring--gold">
+            <img src="/assets/avatars/leocat.jpg" alt="LeoCat" class="avatar-img" data-avatar-img>
+            <span class="country-flag">🇬🇧</span>
+          </div>
+          <div class="seat-card">
+            <div class="seat-header">
+              <strong class="player-name" data-name>LeoCat</strong>
+            </div>
+            <div class="player-stack" data-stack>$1,280</div>
+            <div class="action-pill action-pill--check" data-action>Check</div>
+          </div>
+        </div>
+
+        <!-- SEAT 3: MIRA (TOP-CENTER) -->
+        <div id="seat-3" class="player-seat seat-pos-topcenter">
+          <div class="hole-cards" data-hole></div>
+          <div class="avatar-ring avatar-ring--red">
+            <img src="/assets/avatars/mira.jpg" alt="Mira" class="avatar-img" data-avatar-img>
+            <span class="country-flag">🇫🇷</span>
+          </div>
+          <div class="seat-card">
+            <div class="seat-header">
+              <strong class="player-name" data-name>Mira</strong>
+            </div>
+            <div class="player-stack" data-stack>$980</div>
+            <div class="action-pill action-pill--bet" data-action>Bet 1,200</div>
+          </div>
+        </div>
+
+        <!-- SEAT 4: SHADOW88 (TOP-RIGHT) -->
+        <div id="seat-4" class="player-seat seat-pos-topright">
+          <div class="hole-cards" data-hole></div>
+          <div class="avatar-ring">
+            <img src="/assets/avatars/shadow88.jpg" alt="Shadow88" class="avatar-img" data-avatar-img>
+            <span class="country-flag">🇺🇸</span>
+          </div>
+          <div class="seat-card">
+            <div class="seat-header">
+              <strong class="player-name" data-name>Shadow88</strong>
+            </div>
+            <div class="player-stack" data-stack>$2,340</div>
+            <div class="action-pill action-pill--fold" data-action>Fold</div>
+          </div>
+        </div>
+
+        <!-- SEAT 5: ANATOLIA (BOTTOM-RIGHT / MID-RIGHT) -->
+        <div id="seat-5" class="player-seat seat-pos-midright">
+          <div class="hole-cards" data-hole></div>
+          <div class="avatar-ring">
+            <img src="/assets/avatars/anatolia.jpg" alt="Anatolia" class="avatar-img" data-avatar-img>
+            <span class="country-flag">🇹🇷</span>
+          </div>
+          <div class="seat-card">
+            <div class="seat-header">
+              <strong class="player-name" data-name>Anatolia</strong>
+            </div>
+            <div class="player-stack" data-stack>$1,840</div>
+            <div class="action-pill action-pill--fold" data-action>Fold</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM ACTION CONSOLE -->
+      <div class="action-dock">
+        <div class="action-buttons-grid">
+          <!-- FOLD -->
+          <button type="button" id="fold-button" class="action-btn btn-fold" disabled>
+            <span class="btn-icon">✕</span>
+            <span class="btn-text">Fold</span>
+          </button>
+
+          <!-- CALL / CHECK -->
+          <button type="button" id="passive-button" class="action-btn btn-call" disabled>
+            <span class="btn-icon">📞</span>
+            <div class="btn-call-content">
+              <span id="call-action-type">Call</span>
+              <strong id="call-action-amount">1,200</strong>
+            </div>
+          </button>
+
+          <!-- RAISE -->
+          <button type="button" id="raise-button" class="action-btn btn-raise" disabled>
+            <span class="btn-icon">🔨</span>
+            <span class="btn-text" id="raise-btn-text">Raise</span>
+          </button>
+        </div>
+
+        <!-- BET SIZING & STEPPER CONTROLS -->
+        <div class="bet-sizing-panel">
+          <div class="preset-buttons-row">
+            <button type="button" id="btn-half-pot" class="preset-btn">1/2 Pot</button>
+            <button type="button" id="btn-pot" class="preset-btn">Pot</button>
+            <button type="button" id="btn-all-in" class="preset-btn">All In</button>
+          </div>
+
+          <div class="stepper-row">
+            <button type="button" id="btn-minus" class="step-btn">—</button>
+            <input type="text" id="raise-amount" class="stepper-input" value="2,400" autocomplete="off" disabled>
+            <button type="button" id="btn-plus" class="step-btn">+</button>
+          </div>
+
+          <div class="slider-wrap">
+            <input type="range" id="raise-range" class="bet-slider" min="0" max="3460" step="20" value="2400" disabled>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar sidebar-right">
+      <div class="panel-tabs">
+        <button type="button" class="tab-btn tab-btn--active">Lobby</button>
+        <button type="button" class="tab-btn">Players</button>
+        <button type="button" class="tab-btn">Stats</button>
+      </div>
+
+      <!-- LIVE TABLES SECTION -->
+      <div class="live-tables-section">
+        <div class="section-title">
+          <span>Live Tables</span>
+        </div>
+
+        <div class="filter-pills">
+          <button type="button" class="filter-pill filter-pill--active">All</button>
+          <button type="button" class="filter-pill">Low</button>
+          <button type="button" class="filter-pill">Medium</button>
+          <button type="button" class="filter-pill">High</button>
+        </div>
+
+        <div class="table-list-header">
+          <span>Table</span>
+          <span>Stakes</span>
+          <span>Players</span>
+          <span style="text-align:right;">Status</span>
+        </div>
+
+        <div class="table-list-rows">
+          <div class="table-list-row table-list-row--active">
+            <span class="col-id">#12</span>
+            <span class="col-stakes">$10 / $20</span>
+            <span class="col-players">6 / 9</span>
+            <span class="col-status status--playing">Playing</span>
+          </div>
+          <div class="table-list-row">
+            <span class="col-id">#7</span>
+            <span class="col-stakes">$5 / $10</span>
+            <span class="col-players">8 / 9</span>
+            <span class="col-status status--playing">Playing</span>
+          </div>
+          <div class="table-list-row">
+            <span class="col-id">#21</span>
+            <span class="col-stakes">$25 / $50</span>
+            <span class="col-players">5 / 9</span>
+            <span class="col-status status--playing">Playing</span>
+          </div>
+          <div class="table-list-row">
+            <span class="col-id">#34</span>
+            <span class="col-stakes">$1 / $2</span>
+            <span class="col-players">9 / 9</span>
+            <span class="col-status status--waiting">Waiting</span>
+          </div>
+          <div class="table-list-row">
+            <span class="col-id">#45</span>
+            <span class="col-stakes">$50 / $100</span>
+            <span class="col-players">3 / 6</span>
+            <span class="col-status status--playing">Playing</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn-join-random">
+          <span>+</span> Join Random Table
+        </button>
+
+        <div class="or-divider">
+          <span>or</span>
+        </div>
+
+        <button type="button" class="btn-create-private">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Create Private Table
+        </button>
+      </div>
+
+      <!-- RECENT HANDS SECTION -->
+      <div class="recent-hands-section">
+        <div class="section-title-bar">
+          <span>Recent Hands</span>
+          <a href="#" class="view-all-link">View All</a>
+        </div>
+
+        <div id="history-list" class="recent-hands-list">
+          <div class="hand-row">
+            <div class="hand-player-col">
+              <strong class="hand-winner">Cossack</strong>
+              <span class="hand-type">Two Pair</span>
+            </div>
+            <div class="hand-cards-col">
+              <span class="mini-card mini-card--red">K♥</span>
+              <span class="mini-card mini-card--black">K♣</span>
+            </div>
+            <div class="hand-pot-col text-win">+2,940</div>
+          </div>
+
+          <div class="hand-row">
+            <div class="hand-player-col">
+              <strong class="hand-winner">Mira</strong>
+              <span class="hand-type">Straight</span>
+            </div>
+            <div class="hand-cards-col">
+              <span class="mini-card mini-card--black">Q♠</span>
+              <span class="mini-card mini-card--red">J♦</span>
+            </div>
+            <div class="hand-pot-col text-win">+1,820</div>
+          </div>
+
+          <div class="hand-row">
+            <div class="hand-player-col">
+              <strong class="hand-winner">Byte</strong>
+              <span class="hand-type">Flush</span>
+            </div>
+            <div class="hand-cards-col">
+              <span class="mini-card mini-card--red">A♦</span>
+              <span class="mini-card mini-card--red">10♦</span>
+            </div>
+            <div class="hand-pot-col text-win">+3,100</div>
+          </div>
+
+          <div class="hand-row">
+            <div class="hand-player-col">
+              <strong class="hand-winner">Shadow88</strong>
+              <span class="hand-type">Pair</span>
+            </div>
+            <div class="hand-cards-col">
+              <span class="mini-card mini-card--black">7♠</span>
+              <span class="mini-card mini-card--red">7♦</span>
+            </div>
+            <div class="hand-pot-col text-win">+980</div>
+          </div>
+
+          <div class="hand-row">
+            <div class="hand-player-col">
+              <strong class="hand-winner">Anatolia</strong>
+              <span class="hand-type">High Card</span>
+            </div>
+            <div class="hand-cards-col">
+              <span class="mini-card mini-card--black">A♠</span>
+              <span class="mini-card mini-card--red">9♥</span>
+            </div>
+            <div class="hand-pot-col text-loss">-1,200</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- BOTTOM FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">
+      <div class="rootcastle-emblem">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h16v4H4v-4zm2 6h12v4H6v-4z" fill="#38bdf8"/>
+        </svg>
+      </div>
+      <div class="footer-brand-meta">
+        <strong>ROOTCASTLE</strong>
+        <span>Engineering & Innovation</span>
+      </div>
+      <div class="social-links">
+        <a href="https://github.com/rootcastleco" target="_blank" rel="noreferrer" title="GitHub">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="#" title="Discord">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </a>
+        <a href="#" title="Twitter">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" title="YouTube">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="#" title="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-center">
+      <span>Fair Play</span> • <span>Secure</span> • <span>Encrypted</span>
+    </div>
+
+    <div class="footer-right">
+      <span class="version-tag">v1.0.0</span>
+      <div class="latency-pill">
+        <span class="signal-bars">
+          <i></i><i></i><i></i><i></i>
+        </span>
+        <span>48ms</span>
+      </div>
+      <button type="button" id="fullscreen-btn" class="icon-btn-minimal" title="Fullscreen">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+    </div>
+  </footer>
+
 </div>
+
+<!-- TOAST NOTIFICATION -->
 <div id="toast" class="toast" role="status"></div>
+
 <script type="module" src="/js/app.js"></script>
-</body></html>
+</body>
+</html>
