@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Rootcastle Poker</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">♠</div><div><strong>ROOTCASTLE</strong><span>POKER LAB</span></div></div>
+    <div class="table-summary"><span id="table-name">Rootcastle Table 01</span><span class="sep">/</span><span id="hand-number">HAND #---</span><span class="sep">/</span><span>BLINDS <strong id="blind-level">$10 / $20</strong></span></div>
+    <div class="top-actions"><span id="connection-status" class="connection connection--bad">RECONNECTING</span><div class="wallet"><span>STACK</span><strong id="wallet-value">$0</strong></div><button id="reset-button" class="icon-button" type="button" aria-label="Masayı sıfırla">↻</button></div>
+  </header>
+
+  <aside class="sidebar sidebar--left">
+    <nav class="nav-list"><button class="nav-item nav-item--active" type="button"><span>♠</span>Play</button><button class="nav-item" type="button"><span>⌁</span>Tables</button><button class="nav-item" type="button"><span>◎</span>Profile</button><button class="nav-item" type="button"><span>≡</span>History</button></nav>
+    <section class="panel compact-panel"><div class="panel-title"><span>SESSION</span><span class="live-dot"></span></div><dl class="stat-grid"><div><dt>Hands</dt><dd id="stat-hands">0</dd></div><div><dt>Won</dt><dd id="stat-wins">0</dd></div><div><dt>Win rate</dt><dd id="stat-rate">0%</dd></div><div><dt>Biggest pot</dt><dd id="stat-biggest">$0</dd></div></dl></section>
+    <section class="panel chat-panel"><div class="panel-title">TABLE CHAT</div><div id="chat-list" class="chat-list" aria-live="polite"></div><form id="chat-form" class="chat-form"><input id="chat-input" maxlength="120" autocomplete="off" placeholder="Mesaj yaz..." aria-label="Sohbet mesajı"><button type="submit" aria-label="Gönder">→</button></form></section>
+    <p class="fair-play">Virtual chips only · No real-money wagering</p>
+  </aside>
+
+  <main class="game-stage">
+    <section class="table-header"><div><span class="eyebrow">STREET</span><strong id="street-value">PREFLOP</strong></div><div class="pot-box"><span>POT</span><strong id="pot-value">$0</strong></div><button id="new-hand-button" class="secondary-button" type="button" disabled>NEW HAND</button></section>
+    <div class="poker-room"><div class="ambient-grid"></div><div class="poker-table"><div class="table-rail"></div><div class="table-felt"><div class="felt-line felt-line--outer"></div><div class="felt-line felt-line--inner"></div><div class="table-logo"><span>♠</span><strong>ROOTCASTLE</strong><small>TEXAS HOLD'EM</small></div><div id="community-cards" class="community-cards"></div><div class="pot-chips"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div id="seat-0" class="seat seat-0"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>YOU</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
+      <div id="seat-1" class="seat seat-1"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
+      <div id="seat-2" class="seat seat-2"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
+      <div id="seat-3" class="seat seat-3"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
+      <div id="seat-4" class="seat seat-4"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
+      <div id="seat-5" class="seat seat-5"><div class="hole-cards" data-hole></div><div class="avatar" data-avatar>--</div><div class="seat-info"><div class="seat-name"><strong data-name>BOT</strong><span data-badges></span></div><span class="stack" data-stack>$0</span><small data-action></small></div></div>
+    </div></div>
+    <div id="status-message" class="status-message" aria-live="polite">Oyun yükleniyor...</div>
+    <section class="action-console"><div class="action-buttons"><button id="fold-button" class="action-button action-button--fold" type="button" disabled>FOLD</button><button id="passive-button" class="action-button action-button--call" type="button" disabled>CHECK</button><button id="raise-button" class="action-button action-button--raise" type="button" disabled>RAISE</button></div><div class="bet-control"><div class="bet-control-head"><span>RAISE TO</span><input id="raise-amount" type="number" value="0" min="0" step="10" disabled></div><input id="raise-range" type="range" value="0" min="0" max="100" step="10" disabled aria-label="Raise miktarı"><div class="bet-marks"><span>MIN</span><span>POT CONTROL</span><span>MAX</span></div></div></section>
+  </main>
+
+  <aside class="sidebar sidebar--right">
+    <section class="panel lobby-panel"><div class="panel-title"><span>LIVE TABLES</span><span>6 MAX</span></div><div class="table-row table-row--active"><span><i class="live-dot"></i>RC-01</span><span>$10 / $20</span><strong>PLAYING</strong></div><div class="table-row"><span><i></i>RC-02</span><span>$25 / $50</span><em>LOCKED</em></div><div class="table-row"><span><i></i>RC-03</span><span>$50 / $100</span><em>LOCKED</em></div></section>
+    <section class="panel history-panel"><div class="panel-title"><span>RECENT HANDS</span><span>SERVER VERIFIED</span></div><div id="history-list" class="history-list"></div></section>
+    <section class="panel system-panel"><div class="panel-title">ENGINE</div><div class="engine-row"><span>Authority</span><strong>Server</strong></div><div class="engine-row"><span>Transport</span><strong>SSE + REST</strong></div><div class="engine-row"><span>Deck RNG</span><strong>crypto.randomInt</strong></div><div class="engine-row"><span>Mode</span><strong>1P + 5 bots</strong></div></section>
+  </aside>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<script type="module" src="/js/app.js"></script>
+</body></html>
